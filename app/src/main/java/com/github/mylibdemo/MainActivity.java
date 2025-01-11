@@ -1,6 +1,7 @@
 package com.github.mylibdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.Button;
 
 import com.github.mylibdemo.bean.BaseResponse;
 import com.github.mylibdemo.bean.LoginUserInfo;
+import com.github.yjz.livedata.SingleLiveData;
 import com.github.yjz.wrap_retrofit.http.ApiResult;
 import com.github.yjz.wrap_retrofit.util.RxUtils;
 import com.github.mylibdemo.api.DemoApiRequest;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void handleRequestEvent() {
+
         new DemoApiRequest().userLogin()
                 .compose(RxUtils.applySchedulers())
                 .as(RxLife.as(this))

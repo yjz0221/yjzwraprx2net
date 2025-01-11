@@ -51,7 +51,7 @@ public class RxUtils {
                             IBizError iBizError = (IBizError) t;
 
                             if (iBizError.isBizError()) {
-                                return (ApiResult<T>) new ApiResult.BizError(iBizError.bizCode(), iBizError.bizMsg());
+                                return ApiResult.BizError.create(iBizError.bizCode(), iBizError.bizMsg());
                             }
                         }
 
@@ -60,8 +60,7 @@ public class RxUtils {
                 }).onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ApiResult<T>>>() {
                     @Override
                     public ObservableSource<? extends ApiResult<T>> apply(Throwable throwable) throws Exception {
-                        return Observable.just(new ApiResult.Exception(ApiException.parseException(throwable)))
-                                .map(exception -> (ApiResult<T>) exception);
+                        return Observable.just(ApiResult.Exception.create(ApiException.parseException(throwable)));
                     }
                 });
             }

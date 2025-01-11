@@ -33,6 +33,14 @@ public class ApiResult<T> {
                     "msg=" + msg + '\'' +
                     '}';
         }
+
+        public static <T> ApiResult<T> create(T t, String msg){
+            return (ApiResult<T>) new Success(t,msg);
+        }
+
+        public static <T> ApiResult<T> create(T t){
+            return create(t,"");
+        }
     }
 
 
@@ -40,9 +48,14 @@ public class ApiResult<T> {
         public int code;
         public String msg;
 
-        public BizError(int code, String msg) {
+        private BizError(int code, String msg) {
             this.code = code;
             this.msg = msg;
+        }
+
+
+        public static <T> ApiResult<T> create(int code, String msg){
+            return (ApiResult<T>) new BizError(code,msg);
         }
 
 
@@ -60,7 +73,7 @@ public class ApiResult<T> {
     public static class Exception extends ApiResult<Object> {
         public ApiException exp;
 
-        public Exception(ApiException t) {
+        private Exception(ApiException t) {
             this.exp = t;
         }
 
@@ -71,6 +84,10 @@ public class ApiResult<T> {
                     "exp=" + exp + '\'' +
                     '}';
         }
+
+        public static <T> ApiResult<T> create(ApiException t){
+            return (ApiResult<T>) new Exception(t);
+        }
     }
 
 
@@ -80,10 +97,15 @@ public class ApiResult<T> {
         public String msg;
 
 
-        public Progress(long totalLen, long curLen, String msg) {
+        private Progress(long totalLen, long curLen, String msg) {
             this.totalLen = totalLen;
             this.curLen = curLen;
             this.msg = msg;
+        }
+
+
+        public static <T> ApiResult<T> create(long totalLen, long curLen, String msg){
+            return (ApiResult<T>) new Progress(totalLen,curLen,msg);
         }
 
 
@@ -108,6 +130,15 @@ public class ApiResult<T> {
 
         public Loading(String msg) {
             this.msg = msg;
+        }
+
+
+        public static <T> ApiResult<T> create(String msg){
+            return (ApiResult<T>) new Loading(msg);
+        }
+
+        public static <T> ApiResult<T> create(){
+            return create("");
         }
     }
 
@@ -151,7 +182,7 @@ public class ApiResult<T> {
     }
 
 
-    public T getResponseData() {
+    public T getData() {
         if (isSuccess()) {
             ApiResult.Success<T> result = (Success<T>) this;
 
@@ -161,7 +192,7 @@ public class ApiResult<T> {
         return null;
     }
 
-    public String getResponseMsg() {
+    public String getDataMessage() {
         if (isSuccess()) {
             ApiResult.Success<T> result = (Success<T>) this;
 
@@ -170,5 +201,6 @@ public class ApiResult<T> {
 
         return null;
     }
+
 
 }

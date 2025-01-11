@@ -11,16 +11,16 @@ public abstract class ApiCallback<R> extends WrapCallback<R> {
 
     @Override
     public void onSuccess(R result) {
-        onApiResponse(new ApiResult.Success<R>(result));
+        onApiResponse(new ApiResult.Success<>(result));
     }
 
     @Override
     public void onBizError(BizException bizException) {
-        onApiResponse((ApiResult<R>) new ApiResult.BizError(bizException.code, bizException.message));
+        onApiResponse(ApiResult.BizError.create(bizException.code, bizException.message));
     }
 
     @Override
     public void onException(Throwable t) {
-        onApiResponse((ApiResult<R>) new ApiResult.Exception(ApiException.parseException(t)));
+        onApiResponse(ApiResult.Exception.create(ApiException.parseException(t)));
     }
 }

@@ -1,6 +1,8 @@
 package com.github.yjz.wrap_retrofit.http;
 
 
+import androidx.annotation.NonNull;
+
 import com.github.yjz.wrap_retrofit.http.exception.ApiException;
 
 /**
@@ -23,17 +25,18 @@ public class ApiResult<T> {
             this.msg = msg;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "Success{" +
-                    "data=" + data +
-                    "msg=" + msg +
+                    "data=" + data + '\'' +
+                    "msg=" + msg + '\'' +
                     '}';
         }
     }
 
 
-    public static class BizError<T> extends ApiResult<T> {
+    public static class BizError extends ApiResult<Object> {
         public int code;
         public String msg;
 
@@ -43,33 +46,35 @@ public class ApiResult<T> {
         }
 
 
+        @NonNull
         @Override
         public String toString() {
             return "BizError{" +
-                    "code=" + code +
-                    "msg=" + msg +
+                    "code=" + code + '\'' +
+                    "msg=" + msg + '\'' +
                     '}';
         }
     }
 
 
-    public static class Exception<T> extends ApiResult<T> {
+    public static class Exception extends ApiResult<Object> {
         public ApiException exp;
 
         public Exception(ApiException t) {
             this.exp = t;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "Exception{" +
-                    "exp=" + exp +
+                    "exp=" + exp + '\'' +
                     '}';
         }
     }
 
 
-    public static class Progress<T> extends ApiResult<T> {
+    public static class Progress extends ApiResult<Object> {
         public long totalLen;
         public long curLen;
         public String msg;
@@ -82,17 +87,18 @@ public class ApiResult<T> {
         }
 
 
+        @NonNull
         @Override
         public String toString() {
             return "Progress{" +
-                    "totalLen=" + totalLen +
-                    "curLen=" + curLen +
-                    "msg=" + msg +
+                    "totalLen=" + totalLen + '\'' +
+                    "curLen=" + curLen + '\'' +
+                    "msg=" + msg + '\'' +
                     '}';
         }
     }
 
-    public static class Loading<T> extends ApiResult<T> {
+    public static class Loading extends ApiResult<Object> {
         public String msg;
 
 
@@ -132,16 +138,16 @@ public class ApiResult<T> {
     }
 
 
-    public ApiResult.BizError<T> getApiBizError() {
-        return (ApiResult.BizError<T>) this;
+    public ApiResult.BizError getApiBizError() {
+        return (ApiResult.BizError) this;
     }
 
-    public ApiResult.Progress<T> getApiProgress() {
-        return (ApiResult.Progress<T>) this;
+    public ApiResult.Progress getApiProgress() {
+        return (ApiResult.Progress) this;
     }
 
-    public ApiResult.Exception<T> getApiException() {
-        return (ApiResult.Exception<T>) this;
+    public ApiResult.Exception getApiException() {
+        return (ApiResult.Exception) this;
     }
 
 

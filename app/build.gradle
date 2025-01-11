@@ -47,4 +47,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'  //数据转换器
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'  //数据解析器，内含rxJava
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'   //rxAndroid 带android线程调度器
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+
 }

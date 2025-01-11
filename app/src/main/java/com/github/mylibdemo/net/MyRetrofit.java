@@ -1,18 +1,20 @@
 package com.github.mylibdemo.net;
 
 
-import com.github.mylibdemo.BuildConfig;
+import com.github.mylibdemo.net.adapter.IntegerTypeAdapter;
+import com.github.mylibdemo.net.adapter.StringTypeAdapter;
+import com.github.mylibdemo.net.factory.CustomGsonConverterFactory;
 import com.github.yjz.wrap_retrofit.YJZNetMgr;
 import com.github.yjz.wrap_retrofit.http.factory.CallFactory;
-import com.github.yjz.wrap_retrofit.http.interceptor.LoggerInterceptor;
 import com.github.mylibdemo.net.util.NetConstant;
+import com.google.gson.GsonBuilder;
+
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Call;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MyRetrofit {
@@ -41,17 +43,23 @@ public class MyRetrofit {
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .callFactory(new CallFactory((Call.Factory) okHttpClient))
+                .callFactory(new CallFactory(okHttpClient))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(CustomGsonConverterFactory.create(new GsonBuilder()
+                        .registerTypeAdapter(Integer.class, new IntegerTypeAdapter())
+                        .registerTypeAdapter(int.class, new IntegerTypeAdapter())
+                        .registerTypeAdapter(String.class, new StringTypeAdapter())
+                        .create()))
                 .build();
     }
 
 
     private OkHttpClient initOkhttpClient() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         return new OkHttpClient.Builder()
-                .addInterceptor(new LoggerInterceptor(BuildConfig.DEBUG))
+                .addInterceptor(loggingInterceptor)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)

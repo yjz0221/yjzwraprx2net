@@ -31,16 +31,16 @@ public class RxUtils {
     }
 
 
-    public static <T> ObservableTransformer<T, ApiResult<T>> applyYjzNetSchedulers() {
+    public static <T> ObservableTransformer<T, ApiResult<T>> applyApiResultSchedulers() {
         return new ObservableTransformer<T, ApiResult<T>>() {
             @Override
             public ObservableSource<ApiResult<T>> apply(Observable<T> upstream) {
-                return upstream.compose(applySchedulers()).compose(applyRxNet());
+                return upstream.compose(applySchedulers()).compose(applyApiResult());
             }
         };
     }
 
-    public static <T> ObservableTransformer<T, ApiResult<T>> applyRxNet() {
+    public static <T> ObservableTransformer<T, ApiResult<T>> applyApiResult() {
         return new ObservableTransformer<T, ApiResult<T>>() {
             @Override
             public ObservableSource<ApiResult<T>> apply(Observable<T> upstream) {
@@ -51,7 +51,7 @@ public class RxUtils {
                             IBizError iBizError = (IBizError) t;
 
                             if (iBizError.isBizError()) {
-                                return new ApiResult.BizError<>(iBizError.bizCode(), iBizError.bizMsg());
+                                return (ApiResult<T>) new ApiResult.BizError(iBizError.bizCode(), iBizError.bizMsg());
                             }
                         }
 
@@ -60,7 +60,8 @@ public class RxUtils {
                 }).onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ApiResult<T>>>() {
                     @Override
                     public ObservableSource<? extends ApiResult<T>> apply(Throwable throwable) throws Exception {
-                        return Observable.just(new ApiResult.Exception<T>(ApiException.parseException(throwable)));
+                        return Observable.just(new ApiResult.Exception(ApiException.parseException(throwable)))
+                                .map(exception -> (ApiResult<T>) exception);
                     }
                 });
             }

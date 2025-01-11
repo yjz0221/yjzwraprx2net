@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.github.mylibdemo.bean.BaseResponse;
+import com.github.mylibdemo.bean.LoginUserInfo;
 import com.github.yjz.wrap_retrofit.http.ApiResult;
 import com.github.yjz.wrap_retrofit.util.RxUtils;
 import com.github.mylibdemo.api.DemoApiRequest;
-import com.github.mylibdemo.bean.AuthBean;
 import com.github.mylibdemo.net.RetrofitMgr;
 import com.rxjava.rxlife.RxLife;
+
+import okhttp3.ResponseBody;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void handleRequestEvent() {
-        new DemoApiRequest().requestAccessToken()
+        new DemoApiRequest().userLogin()
                 .compose(RxUtils.applySchedulers())
                 .as(RxLife.as(this))
                 .subscribe(apiResult -> {
@@ -47,19 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
                     if (apiResult.isSuccess()) {
                         //请求成功
-                        ApiResult.Success<AuthBean> successResult = apiResult.getApiSuccess();
-
+                        ApiResult.Success<BaseResponse<LoginUserInfo>> successResult = apiResult.getApiSuccess();
                     } else if (apiResult.isBizError()) {
                         //业务异常
-                        ApiResult.BizError<AuthBean> bizErrorResult = apiResult.getApiBizError();
-
-                        Log.e("MyRetrofit", "BizError " + bizErrorResult);
-
+                        ApiResult.BizError bizErrorResult = apiResult.getApiBizError();
                     } else if (apiResult.isException()) {
                         //其它异常
-                        ApiResult.Exception<AuthBean> exp = apiResult.getApiException();
-
-                        Log.e("MyRetrofit", "Exception " + exp.exp.code);
+                        ApiResult.Exception exp = apiResult.getApiException();
                     }
                 });
     }

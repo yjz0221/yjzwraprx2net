@@ -97,6 +97,7 @@ public class LoggerInterceptor implements Interceptor {
             supportPrintType.add("application/json");
             supportPrintType.add("application/xml");
             supportPrintType.add("application/javascript");
+            supportPrintType.add("application/x-www-form-urlencoded");
 
             for (String supportType : supportPrintType) {
                 if (contentType.startsWith(supportType)) {

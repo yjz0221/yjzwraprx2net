@@ -8,6 +8,7 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
 
 import java.net.ConnectException;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 
 import retrofit2.HttpException;
@@ -53,15 +54,31 @@ public class ApiException extends Exception {
 
             switch (httpException.code()) {
                 case UNAUTHORIZED:
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_unauthorized); // 提示未授权或登录过期
+                    break;
                 case FORBIDDEN:
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_forbidden); // 提示没有权限
+                    break;
                 case NOT_FOUND:
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_not_found); // 提示请求的资源不存在
+                    break;
                 case REQUEST_TIMEOUT:
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_request_timeout); // 提示请求超时
+                    break;
                 case GATEWAY_TIMEOUT:
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_gateway_timeout); // 提示网关超时
+                    break;
                 case INTERNAL_SERVER_ERROR:
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_internal_server_error); // 提示服务器内部错误
+                    break;
                 case BAD_GATEWAY:
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_bad_gateway); // 提示无效的网关
+                    break;
                 case SERVICE_UNAVAILABLE:
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_service_unavailable); // 提示服务不可用
+                    break;
                 default:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_error);
+                    backException.message = YJZNetMgr.getString(R.string.yjz_net_http_error_default) + " (" + httpException.code() + ")"; // 提示服务器返回错误，并显示具体状态码
                     break;
             }
 
@@ -69,29 +86,30 @@ public class ApiException extends Exception {
                 || e instanceof JSONException
                 || e instanceof ParseException) {
             backException = new ApiException(e, ERROR.PARSE_ERROR);
-            backException.message = YJZNetMgr.getString(R.string.yjz_net_parse_error);
+            backException.message = YJZNetMgr.getString(R.string.yjz_net_parse_error); // 提示数据解析错误
 
         } else if (e instanceof ConnectException) {
             backException = new ApiException(e, ERROR.NETWORD_ERROR);
-            backException.message = YJZNetMgr.getString(R.string.yjz_net_connect_error);
+            backException.message = YJZNetMgr.getString(R.string.yjz_net_connect_error); // 提示无法连接到服务器，请检查网络
 
+        } else if (e instanceof UnknownHostException) {
+            backException = new ApiException(e, ERROR.NETWORD_ERROR);
+            backException.message = YJZNetMgr.getString(R.string.yjz_net_unknown_host); // 提示无法找到指定服务器，请检查网络或服务器地址
         } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
             backException = new ApiException(e, ERROR.SSL_ERROR);
-            backException.message = YJZNetMgr.getString(R.string.yjz_net_ssl_error);
+            backException.message = YJZNetMgr.getString(R.string.yjz_net_ssl_error); // 提示安全连接失败，可能是证书问题
 
         } else if (e instanceof ConnectTimeoutException) {
             backException = new ApiException(e, ERROR.TIMEOUT_ERROR);
-            backException.message = YJZNetMgr.getString(R.string.yjz_net_timeout_error);
+            backException.message = YJZNetMgr.getString(R.string.yjz_net_connect_timeout); // 提示连接服务器超时
 
         } else if (e instanceof java.net.SocketTimeoutException) {
             backException = new ApiException(e, ERROR.TIMEOUT_ERROR);
-            backException.message = YJZNetMgr.getString(R.string.yjz_net_timeout_error);
+            backException.message = YJZNetMgr.getString(R.string.yjz_net_socket_timeout); // 提示请求超时，请稍后重试
 
         } else {
-
             backException = new ApiException(e, ERROR.UNKNOWN);
-            backException.message = YJZNetMgr.getString(R.string.yjz_net_unknown);
-
+            backException.message = YJZNetMgr.getString(R.string.yjz_net_unknown); // 提示未知错误，请稍后重试
         }
 
         return backException;

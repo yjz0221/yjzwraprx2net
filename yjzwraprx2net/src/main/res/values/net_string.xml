@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="yjz_net_error">网络错误，请稍后重试</string>
+    <string name="yjz_net_parse_error">数据解析错误</string>
+    <string name="yjz_net_connect_error">无法连接到服务器，请检查您的网络连接</string>
+    <string name="yjz_net_unknown_host">无法找到指定服务器，请检查网络或服务器地址</string>
+    <string name="yjz_net_ssl_error">安全连接失败，请稍后重试</string>
+    <string name="yjz_net_timeout_error">请求超时，请稍后重试</string>
+    <string name="yjz_net_unknown">发生未知错误，请稍后重试</string>
 
-    <string name="yjz_net_parse_error">解析错误</string>
-    <string name="yjz_net_connect_error">连接失败</string>
-    <string name="yjz_net_ssl_error">证书验证失败</string>
-    <string name="yjz_net_timeout_error">连接超时</string>
-    <string name="yjz_net_unknown">未知错误</string>
-    <string name="yjz_net_error">网络错误</string>
+    <string name="yjz_net_unauthorized">您的登录凭证已过期，请重新登录</string>
+    <string name="yjz_net_forbidden">您没有权限执行此操作</string>
+    <string name="yjz_net_not_found">请求的资源不存在</string>
+    <string name="yjz_net_request_timeout">请求超时，请检查网络是否稳定</string>
+    <string name="yjz_net_gateway_timeout">网络连接不稳定，请稍后重试</string>
+    <string name="yjz_net_internal_server_error">服务器内部错误，请稍后再试</string>
+    <string name="yjz_net_bad_gateway">服务器遇到了一个无效的响应，请稍后再试</string>
+    <string name="yjz_net_service_unavailable">服务器当前不可用，请稍后再试</string>
+    <string name="yjz_net_http_error_default">服务器返回错误</string>
+    <string name="yjz_net_connect_timeout">连接服务器超时，请检查网络是否稳定</string>
+    <string name="yjz_net_socket_timeout">读取数据超时，请检查网络是否稳定</string>
 
 </resources>

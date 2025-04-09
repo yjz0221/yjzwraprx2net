@@ -109,7 +109,12 @@ public class ApiException extends Exception {
 
         } else {
             backException = new ApiException(e, ERROR.UNKNOWN);
-            backException.message = YJZNetMgr.getString(R.string.yjz_net_unknown); // 提示未知错误，请稍后重试
+            String realExceptionMessage = e.getLocalizedMessage();
+            if (realExceptionMessage != null){
+                backException.message = YJZNetMgr.getString(R.string.yjz_net_unknown)+"：\n"+realExceptionMessage; // 提示未知错误，请稍后重试
+            }else{
+                backException.message = YJZNetMgr.getString(R.string.yjz_net_unknown) + "：\n"+ e;
+            }
         }
 
         return backException;

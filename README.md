@@ -1,4 +1,4 @@
-### 对RxJava2请求结果封装
+### 对Flow、RxJava2请求结果封装
 
 ```kotlin
 //Flow流代码示例,通过扩展方法applyApiResultSchedulers将结果封装成ApiResult

@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 作者:cl
  * 创建日期：2024/11/19
- * 描述: 基于RxJava流转换
+ * 描述: 基于RxJava流转换，将结果封装成ApiResult
  */
 public class RxUtils {
 

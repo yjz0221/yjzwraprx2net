@@ -31,4 +31,10 @@ public interface IDemoApi {
     @FormUrlEncoded
     @POST("OBDService.asmx/RequestData")
     Observable<BaseResponse<LoginUserInfo>> useLogin(@FieldMap Map<String, String> map);
+
+
+    @FormUrlEncoded
+    @POST("OBDService.asmx/RequestData")
+    Call<BaseResponse<LoginUserInfo>> syncUserLogin(@FieldMap Map<String, String> map);
+
 }

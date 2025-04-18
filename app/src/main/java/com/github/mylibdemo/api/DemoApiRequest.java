@@ -15,9 +15,10 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 /**
- * 作者:chenlong
+ * 作者:cl
  * 创建日期：2024/11/20
  * 描述:测试
  */
@@ -39,7 +40,7 @@ public class DemoApiRequest {
     }
 
 
-    public Observable<ApiResult<BaseResponse<LoginUserInfo>>> userLogin() {
+    public Call<BaseResponse<LoginUserInfo>> syncUserLogin() {
 
         Map<String, String> paramMap = new HashMap<>();
 
@@ -51,8 +52,21 @@ public class DemoApiRequest {
         Log.e("DemoApiRequeset", "userLogin " + paramMap);
 
         return RetrofitMgr.getDemoApi()
-                .useLogin(paramMap)
-                .compose(RxUtils.applyApiResult());
+                .syncUserLogin(paramMap);
     }
 
+    public Observable<BaseResponse<LoginUserInfo>> userLogin() {
+
+        Map<String, String> paramMap = new HashMap<>();
+
+        paramMap.put("Token", "");
+        paramMap.put("FunctionID", "UserLogin");
+        paramMap.put("CheckNum", "13361B5D026A112440B3000AB9C1A599");
+        paramMap.put("Params", "{\"UserName\": \"zhouguojian\",\"Password\": \"Zhougj@55331\"}");
+
+        Log.e("DemoApiRequeset", "userLogin " + paramMap);
+
+        return RetrofitMgr.getDemoApi()
+                .useLogin(paramMap);
+    }
 }

@@ -1,13 +1,57 @@
-### 对RxJava2请求结果封装
+package com.github.mylibdemo;
 
-```kotlin
-//Flow流代码示例,通过扩展方法applyApiResultSchedulers将结果封装成ApiResult
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import androidx.lifecycle.lifecycleScope
+
+import com.github.mylibdemo.bean.BaseResponse;
+import com.github.mylibdemo.bean.LoginUserInfo;
+import com.github.yjz.livedata.SingleLiveData;
+import com.github.yjz.wrap_retrofit.http.ApiResult;
+import com.github.yjz.wrap_retrofit.util.RxUtils;
+import com.github.mylibdemo.api.DemoApiRequest;
+import com.github.mylibdemo.net.RetrofitMgr;
+import com.github.yjz.wrap_retrofit.util.FlowUtils.applyApiResultSchedulers
+import com.rxjava.rxlife.RxLife;
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import retrofit2.Call
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var  btnRequest:Button
+
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         setContentView(R.layout.activity_main);
+         RetrofitMgr.init(getApplication());
+
+         btnRequest = findViewById(R.id.btnRequest);
+
+
+         btnRequest.setOnClickListener{
+             onBtnRequestClick()
+         }
+     }
+
+
+
+    private fun onBtnRequestClick() {
+        flowRequest()
+    }
+
     private fun flowRequest(){
         lifecycleScope.launch {
             flow {
                 val call = DemoApiRequest().syncUserLogin()
                 emit(call.execute())
             }.applyApiResultSchedulers().collect {
+                Log.d("MainActivity","flowRequest $it")
                 when (it) {
                     is ApiResult.Loading -> {
                         //加载状态
@@ -29,8 +73,7 @@
         }
     }
 
-//rx代码示例，通过RxUtils.applyApiResultSchedulers()将结果封装为ApiResult形式
- private fun rxRequest(){
+     private fun rxRequest(){
           DemoApiRequest().userLogin()
              .compose(RxUtils.applyApiResultSchedulers())
              .`as`(RxLife.`as`(this))
@@ -54,7 +97,4 @@
                  }
              };
      }
-
-
-```
-
+}

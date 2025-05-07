@@ -1,7 +1,7 @@
-### 对Flow、RxJava2请求结果封装
+### 优雅的对Flow、RxJava2网络请求结果封装
 
 ```kotlin
-//Flow流代码示例,通过扩展方法applyApiResultSchedulers将结果封装成ApiResult
+//Flow流代码示例,通过扩展方法applyApiResultSchedulers将结果转换成ApiResult
     private fun flowRequest(){
         lifecycleScope.launch {
             flow {
@@ -29,7 +29,7 @@
         }
     }
 
-//rx代码示例，通过RxUtils.applyApiResultSchedulers()将结果封装为ApiResult形式
+//rx代码示例，通过RxUtils.applyApiResultSchedulers()将结果转换成ApiResult形式
  private fun rxRequest(){
           DemoApiRequest().userLogin()
              .compose(RxUtils.applyApiResultSchedulers())
@@ -58,3 +58,16 @@
 
 ```
 
+### 如何引入依赖
+#### 项目级别的build.gradle
+```
+ repositories {
+        maven { url 'https://jitpack.io' }
+    }
+```
+#### 应用模块级别的build.gradle
+```
+dependencies{
+    implementation 'com.github.yjz0221:yjzwraprx2net:1.0.6'
+}
+```

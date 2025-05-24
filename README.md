@@ -1,7 +1,7 @@
 ### 对RxJava2请求结果封装
 
 ```kotlin
-	/**
+   /**
      * Retrofit基于协程，请求Service直接返回ApiResult<T>形式
      * 需继承ApiResultGsonConverterFactory重写gson解析，根据自己服务器返回的json格式而定。
      * 1.添加ApiResultResponseAdapterFactory适配器
@@ -18,7 +18,7 @@
         }
     }
 
-	/**
+    /**
      * 将Flow<T>转成Flow<ApiResult<T>>形式
      */
     private fun flowRequest() {
@@ -42,7 +42,7 @@
         }
     }
 
-	/**
+    /**
      * 将Observable<T>转成ApiResult<T>形式
      */
     private fun rxRequest() {

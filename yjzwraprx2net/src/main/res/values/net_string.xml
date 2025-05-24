@@ -11,6 +11,7 @@
     <string name="yjz_net_unauthorized">您的登录凭证已过期，请重新登录</string>
     <string name="yjz_net_forbidden">您没有权限执行此操作</string>
     <string name="yjz_net_not_found">请求的资源不存在</string>
+    <string name="yjz_net_method_allowed">方法不被允许，请求的方法不被支持</string>
     <string name="yjz_net_request_timeout">请求超时，请检查网络是否稳定</string>
     <string name="yjz_net_gateway_timeout">网络连接不稳定，请稍后重试</string>
     <string name="yjz_net_internal_server_error">服务器内部错误，请稍后再试</string>
@@ -19,5 +20,6 @@
     <string name="yjz_net_http_error_default">服务器返回错误</string>
     <string name="yjz_net_connect_timeout">连接服务器超时，请检查网络是否稳定</string>
     <string name="yjz_net_socket_timeout">读取数据超时，请检查网络是否稳定</string>
+    <string name="yjz_net_http_success_but_response_body_empty">Http请求成功，但是响应体为空!</string>
 
 </resources>

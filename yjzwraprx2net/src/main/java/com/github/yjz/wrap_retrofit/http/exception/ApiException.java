@@ -1,5 +1,7 @@
 package com.github.yjz.wrap_retrofit.http.exception;
 
+import androidx.annotation.NonNull;
+
 import com.github.yjz.wrap_retrofit.R;
 import com.github.yjz.wrap_retrofit.YJZNetMgr;
 import com.google.gson.JsonParseException;
@@ -23,6 +25,7 @@ public class ApiException extends Exception {
     private static final int UNAUTHORIZED = 401;
     private static final int FORBIDDEN = 403;
     private static final int NOT_FOUND = 404;
+    private static final int METHOD_ALLOWED = 405;
     private static final int REQUEST_TIMEOUT = 408;
     private static final int INTERNAL_SERVER_ERROR = 500;
     private static final int BAD_GATEWAY = 502;
@@ -51,38 +54,13 @@ public class ApiException extends Exception {
             HttpException httpException = (HttpException) e;
 
             backException = new ApiException(e, ERROR.HTTP_ERROR);
+            backException.message = httpCode2String(httpException.code());
+        }else if (e instanceof  OkHttpErrorWrapper){
+            OkHttpErrorWrapper httpErrorWrapper = (OkHttpErrorWrapper) e;
 
-            switch (httpException.code()) {
-                case UNAUTHORIZED:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_unauthorized); // 提示未授权或登录过期
-                    break;
-                case FORBIDDEN:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_forbidden); // 提示没有权限
-                    break;
-                case NOT_FOUND:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_not_found); // 提示请求的资源不存在
-                    break;
-                case REQUEST_TIMEOUT:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_request_timeout); // 提示请求超时
-                    break;
-                case GATEWAY_TIMEOUT:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_gateway_timeout); // 提示网关超时
-                    break;
-                case INTERNAL_SERVER_ERROR:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_internal_server_error); // 提示服务器内部错误
-                    break;
-                case BAD_GATEWAY:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_bad_gateway); // 提示无效的网关
-                    break;
-                case SERVICE_UNAVAILABLE:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_service_unavailable); // 提示服务不可用
-                    break;
-                default:
-                    backException.message = YJZNetMgr.getString(R.string.yjz_net_http_error_default) + " (" + httpException.code() + ")"; // 提示服务器返回错误，并显示具体状态码
-                    break;
-            }
-
-        } else if (e instanceof JsonParseException
+            backException = new ApiException(e, ERROR.HTTP_ERROR); // 使用原始的 OkHttpErrorWrapper
+            backException.message = httpCode2String(httpErrorWrapper.getHttpCode());
+        }else if (e instanceof JsonParseException
                 || e instanceof JSONException
                 || e instanceof ParseException) {
             backException = new ApiException(e, ERROR.PARSE_ERROR);
@@ -121,6 +99,72 @@ public class ApiException extends Exception {
 
     }
 
+
+    /**
+     * 重写 toString() 方法，提供更详细的异常信息。
+     */
+    @NonNull
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        // 1. 添加异常类名 (包含包路径)
+        sb.append(getClass().getName());
+
+        // 2. 添加自定义的 code
+        sb.append(" (Code: ").append(code).append(")");
+
+        // 3. 添加自定义的 message
+        if (message != null && !message.isEmpty()) {
+            sb.append(": ").append(message);
+        }
+
+        // 4. 添加原始的 cause (如果存在)
+        Throwable cause = getCause();
+        if (cause != null) {
+            sb.append(" [Caused by: ").append(cause.toString()).append("]");
+        }
+
+        return sb.toString();
+    }
+
+
+    public static String httpCode2String(int httpCode){
+        String message = "";
+        switch (httpCode) {
+            case UNAUTHORIZED:
+                message = YJZNetMgr.getString(R.string.yjz_net_unauthorized); // 提示未授权或登录过期
+                break;
+            case FORBIDDEN:
+                message = YJZNetMgr.getString(R.string.yjz_net_forbidden); // 提示没有权限
+                break;
+            case NOT_FOUND:
+                message = YJZNetMgr.getString(R.string.yjz_net_not_found); // 提示请求的资源不存在
+                break;
+            case METHOD_ALLOWED:
+                message = YJZNetMgr.getString(R.string.yjz_net_method_allowed); //方法不被允许
+                break;
+            case REQUEST_TIMEOUT:
+                message = YJZNetMgr.getString(R.string.yjz_net_request_timeout); // 提示请求超时
+                break;
+            case GATEWAY_TIMEOUT:
+                message = YJZNetMgr.getString(R.string.yjz_net_gateway_timeout); // 提示网关超时
+                break;
+            case INTERNAL_SERVER_ERROR:
+                message = YJZNetMgr.getString(R.string.yjz_net_internal_server_error); // 提示服务器内部错误
+                break;
+            case BAD_GATEWAY:
+                message = YJZNetMgr.getString(R.string.yjz_net_bad_gateway); // 提示无效的网关
+                break;
+            case SERVICE_UNAVAILABLE:
+                message = YJZNetMgr.getString(R.string.yjz_net_service_unavailable); // 提示服务不可用
+                break;
+            default:
+                message = YJZNetMgr.getString(R.string.yjz_net_http_error_default) + " (" + httpCode + ")"; // 提示服务器返回错误，并显示具体状态码
+                break;
+        }
+
+        return message;
+    }
 
     /**
      * 约定异常

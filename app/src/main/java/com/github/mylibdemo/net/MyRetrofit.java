@@ -4,9 +4,12 @@ package com.github.mylibdemo.net;
 import com.github.mylibdemo.net.adapter.IntegerTypeAdapter;
 import com.github.mylibdemo.net.adapter.StringTypeAdapter;
 import com.github.mylibdemo.net.factory.CustomGsonConverterFactory;
+import com.github.mylibdemo.net.factory.DefaultCustomGsonConverterFactory;
 import com.github.yjz.wrap_retrofit.YJZNetMgr;
+import com.github.yjz.wrap_retrofit.http.factory.ApiResultResponseAdapterFactory;
 import com.github.yjz.wrap_retrofit.http.factory.CallFactory;
 import com.github.mylibdemo.net.util.NetConstant;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
@@ -41,15 +44,19 @@ public class MyRetrofit {
     private void initRetrofit(OkHttpClient okHttpClient) {
         if (okHttpClient == null) throw new NullPointerException("okHttpClient is null");
 
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Integer.class, new IntegerTypeAdapter())
+                .registerTypeAdapter(int.class, new IntegerTypeAdapter())
+                .registerTypeAdapter(String.class, new StringTypeAdapter())
+                .create();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .callFactory(new CallFactory(okHttpClient))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(CustomGsonConverterFactory.create(new GsonBuilder()
-                        .registerTypeAdapter(Integer.class, new IntegerTypeAdapter())
-                        .registerTypeAdapter(int.class, new IntegerTypeAdapter())
-                        .registerTypeAdapter(String.class, new StringTypeAdapter())
-                        .create()))
+                .addCallAdapterFactory(new ApiResultResponseAdapterFactory())
+                .addConverterFactory(new DefaultCustomGsonConverterFactory(gson))
+                .addConverterFactory(CustomGsonConverterFactory.create())
                 .build();
     }
 

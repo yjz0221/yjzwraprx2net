@@ -29,8 +29,8 @@ public class ApiResult<T> {
         @Override
         public String toString() {
             return "Success{" +
-                    "data=" + data + '\'' +
-                    "msg=" + msg + '\'' +
+                    "data=" + data +
+                    ", msg='" + msg + '\'' +
                     '}';
         }
 
@@ -63,8 +63,8 @@ public class ApiResult<T> {
         @Override
         public String toString() {
             return "BizError{" +
-                    "code=" + code + '\'' +
-                    "msg=" + msg + '\'' +
+                    "code=" + code +
+                    ", msg='" + msg + '\'' +
                     '}';
         }
     }
@@ -113,9 +113,9 @@ public class ApiResult<T> {
         @Override
         public String toString() {
             return "Progress{" +
-                    "totalLen=" + totalLen + '\'' +
-                    "curLen=" + curLen + '\'' +
-                    "msg=" + msg + '\'' +
+                    "totalLen=" + totalLen +
+                    ", curLen=" + curLen +
+                    ", msg='" + msg + '\'' +
                     '}';
         }
     }

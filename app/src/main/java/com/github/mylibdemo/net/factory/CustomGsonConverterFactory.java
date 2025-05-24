@@ -45,7 +45,7 @@ public class CustomGsonConverterFactory extends Converter.Factory {
                 String responseString = value.string();
                 BaseResponse<?> baseResponse = gson.fromJson(responseString, BaseResponse.class); // 先解析 BaseResponse 部分
                 if (0 != baseResponse.errNum) {
-                    // ErrNum 不为 0，不解析 Value，直接返回 baseResponse，并抛出异常。
+                    // ErrNum 不为 0，不解析 Value，直接返回 baseResponse
                     return baseResponse;
                 } else {
                     // ErrNum 为 0，正常解析 Value

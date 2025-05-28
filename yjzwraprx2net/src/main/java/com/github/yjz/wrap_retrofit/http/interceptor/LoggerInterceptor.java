@@ -78,18 +78,37 @@ public class LoggerInterceptor implements Interceptor {
 //                    return response.newBuilder().body(ResponseBody.create(contentBody, contentType))
 //                            .build();
                 }
+            }else if(supportPrintRequest(request)){
+                //仅打印请求
+                printLog(request, responseCode,contentBody, endTime - startTime);
             }
-
         }
 
         return response;
     }
 
 
+
+    private boolean supportPrintRequest(Request request) {
+        String contentType = request.header("Content-Type");
+        if (TextUtils.isEmpty(contentType)){
+            RequestBody requestBody = request.body();
+            if (requestBody != null){
+                MediaType mediaType = requestBody.contentType();
+                if (mediaType != null){
+                    contentType = mediaType.toString();
+                }
+            }
+        }
+        return supportPrintContentType(contentType);
+    }
+
     private boolean supportPrintResponse(Response response) {
+        return supportPrintContentType(response.header("Content-Type"));
+    }
 
-        String contentType = response.header("Content-Type");
 
+    private boolean supportPrintContentType(String contentType){
         if (!TextUtils.isEmpty(contentType)) {
             List<String> supportPrintType = new ArrayList<>();
 
@@ -107,9 +126,7 @@ public class LoggerInterceptor implements Interceptor {
         }
 
         return false;
-
     }
-
 
     private void printLog(Request request, int responseCode, String responseContent, Long useTime) {
         String requestHeadersContent = "";

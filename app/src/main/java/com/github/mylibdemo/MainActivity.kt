@@ -51,10 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Retrofit基于协程，请求Service直接返回ApiResult<T>形式
-     * 需继承ApiResultGsonConverterFactory重写gson解析，根据自己服务器返回的json格式而定。
-     * 1.添加ApiResultResponseAdapterFactory适配器
-     * 2.添加ApiResultGsonConverterFactory的gson转换器，可参考DefaultCustomGsonConverterFactory实现，设置给Retrofit实例
+     *Retrofit直接返回网络封装实体类
      */
     private fun flowRequest1(){
         lifecycleScope.launch{
@@ -62,7 +59,17 @@ class MainActivity : AppCompatActivity() {
                 .applySchedulers()
                 .collect{
                     Log.d("MainActivity", "flowRequest1 $it")
-
+                    when (it) {
+                        is ApiResult.Success -> {
+                            //请求成功
+                        }
+                        is ApiResult.BizError -> {
+                            //业务异常
+                        }
+                        is ApiResult.Exception -> {
+                            //其它异常
+                        }
+                    }
                 }
         }
     }

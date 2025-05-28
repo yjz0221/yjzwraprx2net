@@ -9,6 +9,7 @@ import com.github.yjz.wrap_retrofit.YJZNetMgr;
 import com.github.yjz.wrap_retrofit.http.factory.ApiResultResponseAdapterFactory;
 import com.github.yjz.wrap_retrofit.http.factory.CallFactory;
 import com.github.mylibdemo.net.util.NetConstant;
+import com.github.yjz.wrap_retrofit.http.interceptor.LoggerInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -67,6 +68,7 @@ public class MyRetrofit {
 
         return new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(new LoggerInterceptor(true))
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)

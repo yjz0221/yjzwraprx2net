@@ -2,7 +2,7 @@
 
 ```kotlin
    /**
-     * Retrofit基于协程，请求Service直接返回ApiResult<T>形式
+     * Retrofit支持协程版本，支持Restrofit Api直接返回ApiResult<T>形式
      * 需继承ApiResultGsonConverterFactory重写gson解析，根据自己服务器返回的json格式而定。
      * 1.添加ApiResultResponseAdapterFactory适配器
      * 2.添加ApiResultGsonConverterFactory的gson转换器，可参考DefaultCustomGsonConverterFactory实现，设置给Retrofit实例

@@ -20,7 +20,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2024/11/20
  * 描述:简易okhttp日志打印
  */
@@ -31,6 +31,7 @@ public class LoggerInterceptor implements Interceptor {
     private Boolean openLog = false;
 
     private final String tag;
+
 
 
     public LoggerInterceptor(boolean openLog, String tag) {
@@ -88,8 +89,7 @@ public class LoggerInterceptor implements Interceptor {
     }
 
 
-
-    private boolean supportPrintRequest(Request request) {
+    private String getRequestContentType(Request request){
         String contentType = request.header("Content-Type");
         if (TextUtils.isEmpty(contentType)){
             RequestBody requestBody = request.body();
@@ -100,11 +100,30 @@ public class LoggerInterceptor implements Interceptor {
                 }
             }
         }
-        return supportPrintContentType(contentType);
+        return contentType;
+    }
+
+    private String getResponseContentType(Response response){
+        String contentType = response.header("Content-Type");
+        if (TextUtils.isEmpty(contentType)){
+            ResponseBody body = response.body();
+            if (body != null){
+                MediaType mediaType = body.contentType();
+                if (mediaType != null){
+                    contentType = mediaType.toString();
+                }
+            }
+        }
+        return contentType;
+    }
+
+
+    private boolean supportPrintRequest(Request request) {
+        return supportPrintContentType(getRequestContentType(request));
     }
 
     private boolean supportPrintResponse(Response response) {
-        return supportPrintContentType(response.header("Content-Type"));
+        return supportPrintContentType(getResponseContentType(response));
     }
 
 
@@ -148,6 +167,17 @@ public class LoggerInterceptor implements Interceptor {
 
         if (request.headers().size() > 0 && !TextUtils.isEmpty(headerStrBuilder)) {
             headerStrBuilder.delete(headerStrBuilder.length() - 1, headerStrBuilder.length());
+        }else{
+            String reqContentType = getRequestContentType(request);
+            if (!TextUtils.isEmpty(reqContentType)){
+                headerStrBuilder
+                        .append("\"ContentType\"")
+                        .append("\"")
+                        .append(":")
+                        .append("\"")
+                        .append(reqContentType)
+                        .append("\"");
+            }
         }
 
         //okhttp高版本 4.x

@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import com.github.yjz.wrap_retrofit.http.exception.ApiException;
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2024/11/19
  * 描述:封装返回结果
  */

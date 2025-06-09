@@ -1,7 +1,6 @@
 package com.github.yjz.wrap_retrofit.http.call
 
 
-import android.util.Log
 import com.github.yjz.wrap_retrofit.http.ApiResult
 import com.github.yjz.wrap_retrofit.http.exception.ApiException
 import okhttp3.Request

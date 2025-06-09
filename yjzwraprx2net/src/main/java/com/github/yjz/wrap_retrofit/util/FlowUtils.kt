@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2025/4/17
  * 描述:自定义Flow的扩展方法，将结果封装成ApiResult
  */

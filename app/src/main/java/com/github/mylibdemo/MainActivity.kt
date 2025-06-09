@@ -44,10 +44,10 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun onBtnRequestClick() {
-        flowRequest1();
+//        flowRequest1();
 //        flowRequest()
 //        rxRequest()
-//        okCallRequest()
+        okCallRequest()
     }
 
     /**

@@ -2,14 +2,17 @@ package com.github.mylibdemo.bean;
 
 import androidx.annotation.NonNull;
 
+import com.github.yjz.wrap_retrofit.util.OkHttpCallUtils;
 import com.google.gson.annotations.SerializedName;
 
+import kotlin.jvm.functions.Function1;
+
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2025/1/10
  * 描述:登入账号信息
  */
-public class LoginUserInfo {
+public class LoginUserInfo{
 
     @SerializedName("ID")
     private int id;
@@ -69,6 +72,8 @@ public class LoginUserInfo {
     @NonNull
     @Override
     public String toString() {
+
+        OkHttpCallUtils.INSTANCE.responseToApiResult(null);
         return "LoginUserInfo{" +
                 "id=" + id +
                 ", loginToken='" + loginToken + '\'' +

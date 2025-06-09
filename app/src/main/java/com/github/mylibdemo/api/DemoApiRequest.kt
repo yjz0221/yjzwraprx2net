@@ -1,14 +1,15 @@
 package com.github.mylibdemo.api;
 
 
+import com.github.mylibdemo.BuildConfig
 import com.github.mylibdemo.bean.BaseResponse;
 import com.github.mylibdemo.bean.LoginUserInfo;
 import com.github.mylibdemo.net.RetrofitMgr;
 import com.github.mylibdemo.net.util.NetConstant;
 import com.github.yjz.wrap_retrofit.http.ApiResult;
+import com.github.yjz.wrap_retrofit.http.interceptor.LoggerInterceptor
 import com.github.yjz.wrap_retrofit.util.OkHttpCallUtils;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -17,10 +18,9 @@ import kotlinx.coroutines.flow.flowOf
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.Call;
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2024/11/20
  * 描述:测试
  */
@@ -40,8 +40,9 @@ class DemoApiRequest {
     }
 
 
-    fun okCallUserLogin(): ApiResult<BaseResponse<String>> {
+    fun okCallUserLogin(): ApiResult<BaseResponse<LoginUserInfo>> {
         val client = OkHttpClient.Builder()
+            .addInterceptor(LoggerInterceptor(BuildConfig.DEBUG))
             .connectTimeout(10, TimeUnit.SECONDS) // 连接超时
             .readTimeout(30, TimeUnit.SECONDS)    // 读取超时
             .writeTimeout(30, TimeUnit.SECONDS)   // 写入超时
@@ -59,7 +60,7 @@ class DemoApiRequest {
             .post(formBody)
             .build()
 
-        return OkHttpCallUtils.responseToApiResult(client.newCall(request))
+        return OkHttpCallUtils.responseToApiResult(call = client.newCall(request))
     }
 
     private fun createLoginParam() = hashMapOf<String,String>().apply {

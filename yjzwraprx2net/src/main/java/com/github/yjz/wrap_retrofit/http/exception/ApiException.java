@@ -16,24 +16,16 @@ import java.text.ParseException;
 import retrofit2.HttpException;
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2024/11/19
  * 描述:统一异常解析类
  */
 public class ApiException extends Exception {
 
-    private static final int UNAUTHORIZED = 401;
-    private static final int FORBIDDEN = 403;
-    private static final int NOT_FOUND = 404;
-    private static final int METHOD_ALLOWED = 405;
-    private static final int REQUEST_TIMEOUT = 408;
-    private static final int INTERNAL_SERVER_ERROR = 500;
-    private static final int BAD_GATEWAY = 502;
-    private static final int SERVICE_UNAVAILABLE = 503;
-    private static final int GATEWAY_TIMEOUT = 504;
 
     public int code;
     public String message;
+    public int httpCode = ERROR.HttpCode.UNKNOWN;
 
 
     public ApiException(Throwable throwable, int code) {
@@ -55,11 +47,13 @@ public class ApiException extends Exception {
 
             backException = new ApiException(e, ERROR.HTTP_ERROR);
             backException.message = httpCode2String(httpException.code());
+            backException.httpCode = netErrorCode2HttpCode(httpException.code());
         }else if (e instanceof  OkHttpErrorWrapper){
             OkHttpErrorWrapper httpErrorWrapper = (OkHttpErrorWrapper) e;
 
             backException = new ApiException(e, ERROR.HTTP_ERROR); // 使用原始的 OkHttpErrorWrapper
             backException.message = httpCode2String(httpErrorWrapper.getHttpCode());
+            backException.httpCode = netErrorCode2HttpCode(httpErrorWrapper.getHttpCode());
         }else if (e instanceof JsonParseException
                 || e instanceof JSONException
                 || e instanceof ParseException) {
@@ -127,35 +121,53 @@ public class ApiException extends Exception {
         return sb.toString();
     }
 
+    public static int netErrorCode2HttpCode(int httpCode){
+        int resultCode = ERROR.HttpCode.UNKNOWN;
+        switch (httpCode){
+            case ERROR.HttpCode.UNAUTHORIZED:
+            case ERROR.HttpCode.FORBIDDEN:
+            case ERROR.HttpCode.NOT_FOUND:
+            case ERROR.HttpCode.METHOD_ALLOWED:
+            case ERROR.HttpCode.REQUEST_TIMEOUT:
+            case ERROR.HttpCode.GATEWAY_TIMEOUT:
+            case ERROR.HttpCode.INTERNAL_SERVER_ERROR:
+            case ERROR.HttpCode.BAD_GATEWAY:
+            case ERROR.HttpCode.SERVICE_UNAVAILABLE:
+                resultCode = httpCode;
+                break;
+        }
+
+        return resultCode;
+    }
 
     public static String httpCode2String(int httpCode){
         String message = "";
         switch (httpCode) {
-            case UNAUTHORIZED:
+            case ERROR.HttpCode.UNAUTHORIZED:
                 message = YJZNetMgr.getString(R.string.yjz_net_unauthorized); // 提示未授权或登录过期
                 break;
-            case FORBIDDEN:
+            case ERROR.HttpCode.FORBIDDEN:
                 message = YJZNetMgr.getString(R.string.yjz_net_forbidden); // 提示没有权限
                 break;
-            case NOT_FOUND:
+            case ERROR.HttpCode.NOT_FOUND:
                 message = YJZNetMgr.getString(R.string.yjz_net_not_found); // 提示请求的资源不存在
                 break;
-            case METHOD_ALLOWED:
+            case ERROR.HttpCode.METHOD_ALLOWED:
                 message = YJZNetMgr.getString(R.string.yjz_net_method_allowed); //方法不被允许
                 break;
-            case REQUEST_TIMEOUT:
+            case ERROR.HttpCode.REQUEST_TIMEOUT:
                 message = YJZNetMgr.getString(R.string.yjz_net_request_timeout); // 提示请求超时
                 break;
-            case GATEWAY_TIMEOUT:
+            case ERROR.HttpCode.GATEWAY_TIMEOUT:
                 message = YJZNetMgr.getString(R.string.yjz_net_gateway_timeout); // 提示网关超时
                 break;
-            case INTERNAL_SERVER_ERROR:
+            case ERROR.HttpCode.INTERNAL_SERVER_ERROR:
                 message = YJZNetMgr.getString(R.string.yjz_net_internal_server_error); // 提示服务器内部错误
                 break;
-            case BAD_GATEWAY:
+            case ERROR.HttpCode.BAD_GATEWAY:
                 message = YJZNetMgr.getString(R.string.yjz_net_bad_gateway); // 提示无效的网关
                 break;
-            case SERVICE_UNAVAILABLE:
+            case ERROR.HttpCode.SERVICE_UNAVAILABLE:
                 message = YJZNetMgr.getString(R.string.yjz_net_service_unavailable); // 提示服务不可用
                 break;
             default:
@@ -196,6 +208,20 @@ public class ApiException extends Exception {
          * 连接超时
          */
         public static final int TIMEOUT_ERROR = 1006;
+
+
+        public static class HttpCode{
+            public static final int UNKNOWN = -1;
+            public static final int UNAUTHORIZED = 401;
+            public static final int FORBIDDEN = 403;
+            public static final int NOT_FOUND = 404;
+            public static final int METHOD_ALLOWED = 405;
+            public static final int REQUEST_TIMEOUT = 408;
+            public static final int INTERNAL_SERVER_ERROR = 500;
+            public static final int BAD_GATEWAY = 502;
+            public static final int SERVICE_UNAVAILABLE = 503;
+            public static final int GATEWAY_TIMEOUT = 504;
+        }
 
     }
 }

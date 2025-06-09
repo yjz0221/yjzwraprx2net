@@ -1,5 +1,13 @@
 #### <font face="楷体">基于Retrofit的协程、RxJava网络结果封装库</font>
 
+<font face="楷体">初始化库</font>
+
+```kotlin
+YJZNetMgr.init(context);
+```
+
+
+
 1. <font face="楷体">`Retrofit`直接返回网络请求结果</font>
 
    - <font face="楷体">`ApiResultGsonConverterFactory`自定义gson解析，根据自己服务器返回的json格式进行解析。可参考`DefaultCustomGsonConverterFactory`对`ApiResultGsonConverterFactory`实现</font>

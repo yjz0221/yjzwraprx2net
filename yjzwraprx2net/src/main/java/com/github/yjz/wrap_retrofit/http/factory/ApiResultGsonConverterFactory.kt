@@ -11,7 +11,7 @@ import java.lang.reflect.Type
 
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2025/5/24
  * 描述: 用于生产 ApiResult<T> 转换器的抽象工厂。
  * 子类需要实现 [createApiResultConverter] 方法来定义具体的解析逻辑。

@@ -13,9 +13,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2025/1/11
- * 描述:接口业务异常时，不解析Value字段
+ * 描述:Retrofit自定义Gson解析器。由于服务器不规范，接口业务异常时，不解析Value字段
  */
 public class CustomGsonConverterFactory extends Converter.Factory {
 

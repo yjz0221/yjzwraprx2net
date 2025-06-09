@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2025/1/11
  * 描述:网络请求基类
  */

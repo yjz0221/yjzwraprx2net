@@ -13,16 +13,19 @@ import retrofit2.Converter
 import java.lang.reflect.Type
 
 /**
- * 作者:cl
+ * 作者:yjz
  * 创建日期：2025/5/24
- * 描述:针对某个服务器的Json转ApiResult解析逻辑 (ErrNum, ErrMsg)
+ * 描述:用于支持Retrofit请求接口直接返回ApiResult<T>形式： 定义自己服务器的Json转ApiResult解析逻辑
+ * eg.这里的服务器返回的json格式如下：
+ *    失败：{"ErrNum":"1","ErrMsg":"用户名或密码错误","RowCount":"","TotolCount":"","Value":""}
+ *    成功：{"ErrNum":"0","ErrMsg":"成功","RowCount":"","TotolCount":"","Value":{ "ID": "42461", "Token":"20250530091644324357"}}
  */
 class DefaultCustomGsonConverterFactory(gson: Gson) : ApiResultGsonConverterFactory(gson) {
 
     override fun createApiResultConverter(
         actualResponseType: Type,
         delegateConverter: Converter<ResponseBody, *>
-    ): Converter<ResponseBody, ApiResult<*>>? {
+    ): Converter<ResponseBody, ApiResult<*>> {
 
         // 返回一个匿名对象，作为具体的 ResponseBody 到 ApiResult<*> 的转换器
         return object : Converter<ResponseBody, ApiResult<*>> {

@@ -72,8 +72,6 @@ public class LoginUserInfo{
     @NonNull
     @Override
     public String toString() {
-
-        OkHttpCallUtils.INSTANCE.responseToApiResult(null);
         return "LoginUserInfo{" +
                 "id=" + id +
                 ", loginToken='" + loginToken + '\'' +

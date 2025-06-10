@@ -20,13 +20,13 @@ import java.lang.reflect.Type
 object OkHttpCallUtils {
 
 
-    fun <T> responseToApiResult(call: Call):ApiResult<T>{
+    inline fun <reified T> responseToApiResult(call: Call):ApiResult<T>{
         return responseToApiResult(call,object : TypeToken<T>(){}.type)
     }
 
 
-    fun <T> responseToApiResult(call: Call,block: (jsonString: String) -> T):ApiResult<T>{
-        return responseToApiResult(call,object : TypeToken<T>(){}.type,block)
+    fun <T> responseToApiResult(call: Call,type: Type):ApiResult<T>{
+        return responseToApiResult(call,type, block = {jsonString -> Gson().fromJson(jsonString,type) })
     }
 
     /**

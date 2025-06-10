@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity() {
                 when (it) {
                     is ApiResult.Success -> {
                         //请求成功
+                        Log.d("MainActivity", "okCallRequest ${it.getData().value}")
                     }
                     is ApiResult.BizError -> {
                         //业务异常

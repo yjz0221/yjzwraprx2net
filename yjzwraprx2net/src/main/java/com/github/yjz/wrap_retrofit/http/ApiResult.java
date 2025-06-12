@@ -59,6 +59,11 @@ public class ApiResult<T> {
         }
 
 
+        public static <T> ApiResult<T> create(ApiResult.BizError bizError){
+            return (ApiResult<T>) new BizError(bizError.code, bizError.msg);
+        }
+
+
         @NonNull
         @Override
         public String toString() {
@@ -77,6 +82,10 @@ public class ApiResult<T> {
             this.exp = t;
         }
 
+        private Exception(ApiResult.Exception e){
+            this.exp = e.exp;
+        }
+
         @NonNull
         @Override
         public String toString() {
@@ -86,6 +95,10 @@ public class ApiResult<T> {
         }
 
         public static <T> ApiResult<T> create(ApiException t){
+            return (ApiResult<T>) new Exception(t);
+        }
+
+        public static <T> ApiResult<T> create(ApiResult.Exception t){
             return (ApiResult<T>) new Exception(t);
         }
     }

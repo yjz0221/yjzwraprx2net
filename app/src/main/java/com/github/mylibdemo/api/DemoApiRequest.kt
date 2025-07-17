@@ -63,6 +63,30 @@ class DemoApiRequest {
         return OkHttpCallUtils.responseToApiResult(call = client.newCall(request))
     }
 
+
+    fun okCallUserLogin2(): BaseResponse<LoginUserInfo> {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(LoggerInterceptor(BuildConfig.DEBUG))
+            .connectTimeout(10, TimeUnit.SECONDS) // 连接超时
+            .readTimeout(30, TimeUnit.SECONDS)    // 读取超时
+            .writeTimeout(30, TimeUnit.SECONDS)   // 写入超时
+            .build()
+
+        val formBody = FormBody.Builder()
+            .add("Token", "")
+            .add("FunctionID", "UserLogin")
+            .add("CheckNum", "13361B5D026A112440B3000AB9C1A599")
+            .add("Params", "{\"UserName\": \"zhouguojian\",\"Password\": \"Zhougj@55331\"}")
+            .build()
+
+        val request = Request.Builder()
+            .url(NetConstant.BASE_URL + "OBDService.asmx/RequestData")
+            .post(formBody)
+            .build()
+
+        return OkHttpCallUtils.getResponse(call = client.newCall(request))
+    }
+
     private fun createLoginParam() = hashMapOf<String,String>().apply {
         put("Token", "")
         put("FunctionID", "UserLogin")

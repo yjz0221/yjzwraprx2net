@@ -82,4 +82,61 @@ object OkHttpCallUtils {
             response?.close()
         }
     }
+
+
+    inline fun <reified T> getResponse(call: Call):T{
+        return getResponse(call,object : TypeToken<T>(){}.type)
+    }
+
+    /**
+     * 同步执行OkHttp Call，将响应转换为实体 T
+     */
+    fun <T> getResponse(
+        call: Call, type: Type
+    ): T{
+        return getResponse(call,type, block = {jsonString -> Gson().fromJson(jsonString,type) })
+    }
+
+    /**
+     * 同步执行OkHttp Call，将响应转换为实体 T
+     */
+    fun <T> getResponse(
+        call: Call, type: Type,block: (jsonString: String) -> T = { json->
+            Gson().fromJson(json, type)
+        }
+    ): T {
+        var response: Response? = null
+        try {
+            response = call.execute()
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+                if (responseBody != null) {
+                    val jsonString = responseBody.string()
+
+                    //使用Gson将JSON字符串解析为T类型实体
+                    val parsedData = block(jsonString)
+                    //如果不是业务错误，则表示成功
+                    return parsedData
+                } else {
+                    //HTTP成功但响应体为空。这可能是一个错误，也可能是服务器返回 204 No Content。
+                    val httpErrorWrapper = OkHttpErrorWrapper(
+                        response.code(),
+                        response.message(),
+                        response.body()?.string()
+                    )
+                    throw httpErrorWrapper
+                }
+            } else {
+                // HTTP 状态码不在 2xx 范围内
+                val httpErrorWrapper = OkHttpErrorWrapper(
+                    response.code(),
+                    response.message(),
+                    response.body()?.string()
+                )
+                throw httpErrorWrapper
+            }
+        } finally {
+            response?.close()
+        }
+    }
 }

@@ -19,6 +19,8 @@ import com.github.mylibdemo.net.RetrofitMgr;
 import com.github.yjz.wrap_retrofit.util.FlowUtils.applyApiResultSchedulers
 import com.github.yjz.wrap_retrofit.util.FlowUtils.applySchedulers
 import com.rxjava.rxlife.RxLife;
+import io.reactivex.Observable
+import io.reactivex.functions.Function
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 //        flowRequest()
 //        rxRequest()
         okCallRequest()
+//        okCallRequest2()
     }
 
     /**
@@ -141,6 +144,31 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun okCallRequest2(){
+        lifecycleScope.launch(Dispatchers.IO){
+            Observable.just("")
+                .map {
+                    DemoApiRequest().okCallUserLogin2()
+                }
+                .compose(RxUtils.applyApiResult())
+                .subscribe {
+                    Log.d("MainActivity", "okCallRequest2 $it")
+                    when (it) {
+                        is ApiResult.Success -> {
+                            //请求成功
+                            Log.d("MainActivity", "okCallRequest2 ${it.getData().value}")
+                        }
+                        is ApiResult.BizError -> {
+                            //业务异常
+                        }
+                        is ApiResult.Exception -> {
+                            //其它异常
+                        }
+                    }
+                }
         }
     }
 }

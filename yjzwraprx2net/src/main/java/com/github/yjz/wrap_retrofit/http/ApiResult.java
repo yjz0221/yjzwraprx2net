@@ -25,6 +25,11 @@ public class ApiResult<T> {
             this.msg = msg;
         }
 
+        @Override
+        public String getMessage() {
+            return msg;
+        }
+
         @NonNull
         @Override
         public String toString() {
@@ -53,6 +58,10 @@ public class ApiResult<T> {
             this.msg = msg;
         }
 
+        @Override
+        public String getMessage() {
+            return msg;
+        }
 
         public static <T> ApiResult<T> create(int code, String msg){
             return (ApiResult<T>) new BizError(code,msg);
@@ -116,6 +125,11 @@ public class ApiResult<T> {
             this.msg = msg;
         }
 
+        @Override
+        public String getMessage() {
+            return msg;
+        }
+
 
         public static <T> ApiResult<T> create(long totalLen, long curLen, String msg){
             return (ApiResult<T>) new Progress(totalLen,curLen,msg);
@@ -141,10 +155,14 @@ public class ApiResult<T> {
             this("");
         }
 
-        public Loading(String msg) {
+        private Loading(String msg) {
             this.msg = msg;
         }
 
+        @Override
+        public String getMessage() {
+            return msg;
+        }
 
         public static <T> ApiResult<T> create(String msg){
             return (ApiResult<T>) new Loading(msg);
@@ -158,7 +176,6 @@ public class ApiResult<T> {
     public boolean isLoading() {
         return (this instanceof ApiResult.Loading);
     }
-
 
     public boolean isSuccess() {
         return (this instanceof ApiResult.Success);
@@ -177,10 +194,13 @@ public class ApiResult<T> {
     }
 
 
+    public ApiResult.Loading getApiLoading() {
+        return (ApiResult.Loading) this;
+    }
+
     public ApiResult.Success<T> getApiSuccess() {
         return (ApiResult.Success<T>) this;
     }
-
 
     public ApiResult.BizError getApiBizError() {
         return (ApiResult.BizError) this;
@@ -194,6 +214,9 @@ public class ApiResult<T> {
         return (ApiResult.Exception) this;
     }
 
+    public String getMessage(){
+        return "";
+    }
 
     public T getData() {
         if (isSuccess()) {
@@ -212,7 +235,7 @@ public class ApiResult<T> {
             return result.msg;
         }
 
-        return null;
+        return "";
     }
 
 

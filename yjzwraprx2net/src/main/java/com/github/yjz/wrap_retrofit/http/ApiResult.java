@@ -151,10 +151,6 @@ public class ApiResult<T> {
         public String msg;
 
 
-        public Loading() {
-            this("");
-        }
-
         private Loading(String msg) {
             this.msg = msg;
         }

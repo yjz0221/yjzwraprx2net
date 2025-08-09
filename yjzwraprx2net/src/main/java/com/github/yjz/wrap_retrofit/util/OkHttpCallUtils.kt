@@ -136,7 +136,7 @@ object OkHttpCallUtils {
                 throw httpErrorWrapper
             }
         } catch (e: Exception) {
-            throw ApiException.parseException(e)
+            throw e
         }finally {
             response?.close()
         }

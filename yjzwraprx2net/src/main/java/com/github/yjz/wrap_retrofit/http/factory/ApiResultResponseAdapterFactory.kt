@@ -11,7 +11,7 @@ import java.lang.reflect.Type
 
 
 /**
- * Retrofit结果转换器，在协程的基础上将结果转换成ApiResult<T>形式
+ * Retrofit结果转换器，在协程的基础上将结果转换成ApiResult<T>形式，主要是未了统一处理异常
  */
 class ApiResultResponseAdapterFactory : CallAdapter.Factory() {
 

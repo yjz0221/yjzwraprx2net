@@ -2,22 +2,21 @@ package com.github.mylibdemo.api;
 
 
 import com.github.mylibdemo.BuildConfig
-import com.github.mylibdemo.bean.BaseResponse;
-import com.github.mylibdemo.bean.LoginUserInfo;
-import com.github.mylibdemo.net.RetrofitMgr;
-import com.github.mylibdemo.net.util.NetConstant;
-import com.github.yjz.wrap_retrofit.http.ApiResult;
+import com.github.mylibdemo.bean.BaseResponse
+import com.github.mylibdemo.bean.LoginUserInfo
+import com.github.mylibdemo.net.RetrofitMgr
+import com.github.mylibdemo.net.util.NetConstant
+import com.github.yjz.wrap_retrofit.http.ApiResult
 import com.github.yjz.wrap_retrofit.http.interceptor.LoggerInterceptor
-import com.github.yjz.wrap_retrofit.util.OkHttpCallUtils;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import kotlinx.coroutines.flow.Flow;
+import com.github.yjz.wrap_retrofit.util.OkHttpCallUtils
+import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
 
 /**
  * 作者:yjz
@@ -41,7 +40,11 @@ class DemoApiRequest {
 
 
     fun okCallUserLogin(): ApiResult<BaseResponse<LoginUserInfo>> {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
         val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
             .addInterceptor(LoggerInterceptor(BuildConfig.DEBUG))
             .connectTimeout(10, TimeUnit.SECONDS) // 连接超时
             .readTimeout(30, TimeUnit.SECONDS)    // 读取超时

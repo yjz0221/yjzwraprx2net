@@ -20,16 +20,16 @@ public final class ParameterizedTypeImpl implements ParameterizedType {
    private final Type ownerType;
 
    public ParameterizedTypeImpl(@NonNull Type rawType, @NonNull Type[] actualTypeArguments, @Nullable Type ownerType) {
-      Objects.requireNonNull(rawType, "rawType == null");
-      Objects.requireNonNull(actualTypeArguments, "actualTypeArguments == null");
 
-      this.rawType = rawType;
+       this.rawType = rawType;
       this.actualTypeArguments = actualTypeArguments.clone(); // 克隆数组以保证不可变性
       this.ownerType = ownerType;
 
       // 检查泛型参数的合法性
       for (Type typeArgument : this.actualTypeArguments) {
-         Objects.requireNonNull(typeArgument, "typeArgument == null");
+         if (typeArgument == null){
+            throw new NullPointerException("typeArgument == null");
+         }
       }
    }
 
@@ -54,23 +54,54 @@ public final class ParameterizedTypeImpl implements ParameterizedType {
 
    @Override
    public boolean equals(Object other) {
-      if (this == other) return true;
+      if (this == other) {
+         return true;
+      }
       // 必须是 ParameterizedType 的实例才能比较
-      if (!(other instanceof ParameterizedType)) return false;
+      if (!(other instanceof ParameterizedType)) {
+         return false;
+      }
 
       ParameterizedType that = (ParameterizedType) other;
 
-      return Objects.equals(this.getRawType(), that.getRawType()) &&
-              Objects.equals(this.getOwnerType(), that.getOwnerType()) &&
-              Arrays.equals(this.getActualTypeArguments(), that.getActualTypeArguments());
+      // 手动实现 Objects.equals() 的逻辑
+      boolean rawTypesEqual;
+      if (this.getRawType() == null) {
+         rawTypesEqual = (that.getRawType() == null);
+      } else {
+         rawTypesEqual = this.getRawType().equals(that.getRawType());
+      }
+
+      // 手动实现 Objects.equals() 的逻辑
+      boolean ownerTypesEqual;
+      if (this.getOwnerType() == null) {
+         ownerTypesEqual = (that.getOwnerType() == null);
+      } else {
+         ownerTypesEqual = this.getOwnerType().equals(that.getOwnerType());
+      }
+
+      // Arrays.equals() 在低版本 API 中可用
+      return rawTypesEqual && ownerTypesEqual && Arrays.equals(this.getActualTypeArguments(), that.getActualTypeArguments());
    }
+
 
    @Override
    public int hashCode() {
       // 根据 equals 方法中使用的字段来计算 hashCode
+      int ownerTypeHash = 0;
+      if (ownerType != null) {
+         ownerTypeHash = ownerType.hashCode();
+      }
+
+      int rawTypeHash = 0;
+      if (rawType != null) {
+         rawTypeHash = rawType.hashCode();
+      }
+
+      // 这里使用 Arrays.hashCode() 是没有问题的，它在低版本 API 中可用
       return Arrays.hashCode(actualTypeArguments)
-              ^ Objects.hashCode(rawType)
-              ^ Objects.hashCode(ownerType);
+              ^ rawTypeHash
+              ^ ownerTypeHash;
    }
 
    @NonNull

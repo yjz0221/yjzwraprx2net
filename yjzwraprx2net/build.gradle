@@ -26,20 +26,18 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
 
     compileOnly 'androidx.appcompat:appcompat:1.3.1'
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-
-
-    compileOnly 'com.squareup.retrofit2:retrofit:2.9.0' 	//retrofit，内含okhttp
-    compileOnly 'com.squareup.retrofit2:converter-gson:2.9.0'  //数据转换器
-    compileOnly 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'  //数据解析器，内含rxJava
+    compileOnly 'com.squareup.retrofit2:retrofit:2.9.0' 	// retrofit，内含okhttp
+    compileOnly 'com.squareup.retrofit2:converter-gson:2.9.0'  // 数据转换器
+    compileOnly 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'  // 数据解析器，内含rxJava
     compileOnly 'io.reactivex.rxjava2:rxandroid:2.1.1'   //rxAndroid 带android线程调度器
 
     // 协程

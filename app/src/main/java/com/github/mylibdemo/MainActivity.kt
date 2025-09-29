@@ -1,17 +1,12 @@
 package com.github.mylibdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import androidx.lifecycle.lifecycleScope
 
-import com.github.mylibdemo.bean.BaseResponse;
-import com.github.mylibdemo.bean.LoginUserInfo;
-import com.github.yjz.livedata.SingleLiveData;
 import com.github.yjz.wrap_retrofit.http.ApiResult;
 import com.github.yjz.wrap_retrofit.util.RxUtils;
 import com.github.mylibdemo.api.DemoApiRequest;
@@ -20,13 +15,8 @@ import com.github.yjz.wrap_retrofit.util.FlowUtils.applyApiResultSchedulers
 import com.github.yjz.wrap_retrofit.util.FlowUtils.applySchedulers
 import com.rxjava.rxlife.RxLife;
 import io.reactivex.Observable
-import io.reactivex.functions.Function
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import retrofit2.Call
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,10 +36,11 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun onBtnRequestClick() {
-//        flowRequest1();
+//        MyJsonTest.test()
+        flowRequest1();
 //        flowRequest()
 //        rxRequest()
-        okCallRequest()
+//        okCallRequest()
 //        okCallRequest2()
     }
 

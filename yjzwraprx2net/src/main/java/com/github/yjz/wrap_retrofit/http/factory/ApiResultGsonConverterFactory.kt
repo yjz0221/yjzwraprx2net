@@ -2,6 +2,7 @@ package com.github.yjz.wrap_retrofit.http.factory
 
 import com.github.yjz.wrap_retrofit.http.ApiResult
 import com.google.gson.Gson
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -16,6 +17,7 @@ import java.lang.reflect.Type
  * 描述: 用于生产 ApiResult<T> 转换器的抽象工厂。
  * 子类需要实现 [createApiResultConverter] 方法来定义具体的解析逻辑。
  */
+@Deprecated("please use ApiResultConverterFactory")
 abstract class ApiResultGsonConverterFactory protected constructor(protected val gson: Gson) : Converter.Factory() {
 
     // 内部使用的 Gson 转换器工厂，用于委托解析 ApiResult 内部的实际数据类型 (例如 BaseResponse<T>)

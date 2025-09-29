@@ -5,6 +5,7 @@ import com.github.mylibdemo.net.adapter.IntegerTypeAdapter;
 import com.github.mylibdemo.net.adapter.StringTypeAdapter;
 import com.github.mylibdemo.net.factory.CustomGsonConverterFactory;
 import com.github.mylibdemo.net.factory.DefaultCustomGsonConverterFactory;
+import com.github.mylibdemo.net.factory.MyApiResultConverterFactory;
 import com.github.yjz.wrap_retrofit.YJZNetMgr;
 import com.github.yjz.wrap_retrofit.http.factory.ApiResultResponseAdapterFactory;
 import com.github.yjz.wrap_retrofit.http.factory.CallFactory;
@@ -56,7 +57,7 @@ public class MyRetrofit {
                 .callFactory(new CallFactory(okHttpClient))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addCallAdapterFactory(new ApiResultResponseAdapterFactory())
-                .addConverterFactory(new DefaultCustomGsonConverterFactory(gson))
+                .addConverterFactory(new MyApiResultConverterFactory(gson))
                 .addConverterFactory(CustomGsonConverterFactory.create())
                 .build();
     }

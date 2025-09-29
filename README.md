@@ -10,7 +10,7 @@ YJZNetMgr.init(context);
 
 1. <font face="楷体">`Retrofit`直接返回网络请求结果</font>
 
-   - <font face="楷体">`ApiResultGsonConverterFactory`自定义gson解析，根据自己服务器返回的json格式进行解析。可参考`DefaultCustomGsonConverterFactory`对`ApiResultGsonConverterFactory`实现</font>
+   - <font face="楷体">`ApiResultConverterFactory`自定义gson解析，根据自己服务器返回的json格式进行解析。可参考`DefaultCustomGsonConverterFactory`对`ApiResultConverterFactory`实现</font>
 
    - <font face="楷体">为`Retrofit`添加上述自定义好的Gson解析工厂.</font>
 

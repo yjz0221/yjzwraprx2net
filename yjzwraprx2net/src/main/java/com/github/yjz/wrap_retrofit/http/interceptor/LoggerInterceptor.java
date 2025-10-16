@@ -22,8 +22,9 @@ import okhttp3.ResponseBody;
 /**
  * 作者:yjz
  * 创建日期：2024/11/20
- * 描述:简易okhttp日志打印
+ * 描述:简易okhttp日志打印 (弃用，请使用PrettyLogger)
  */
+@Deprecated
 public class LoggerInterceptor implements Interceptor {
 
     private final static String LOG_TAG = "LoggerInterceptor";

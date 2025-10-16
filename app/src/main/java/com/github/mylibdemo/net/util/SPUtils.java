@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * 作者:chenlong
+ * 作者:yjz
  * 创建日期：2024/3/19
- * 描述: 电池包在线加载检测sp工具类
+ * 描述: sp工具类
  */
 public class SPUtils {
 

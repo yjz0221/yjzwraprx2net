@@ -15,7 +15,8 @@ YJZNetMgr.init(context);
    - <font face="楷体">为`Retrofit`添加上述自定义好的Gson解析工厂.</font>
 
      ```kotlin
-     Retrofit.addConverterFactory(DefaultCustomGsonConverterFactory.create())
+     Retrofit.addCallAdapterFactory(ApiResultResponseAdapterFactory()) // 必须添加
+     Retrofit.addConverterFactory(DefaultCustomGsonConverterFactory.create()) // 根据自己服务的json格式实现，将json解析成数据实体
      ```
 
      

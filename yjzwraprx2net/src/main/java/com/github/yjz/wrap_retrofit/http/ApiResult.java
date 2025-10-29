@@ -30,6 +30,11 @@ public class ApiResult<T> {
             return msg;
         }
 
+        @Override
+        public T getData() {
+            return data;
+        }
+
         @NonNull
         @Override
         public String toString() {
@@ -101,6 +106,11 @@ public class ApiResult<T> {
             return "Exception{" +
                     "exp=" + exp + '\'' +
                     '}';
+        }
+
+        @Override
+        public String getMessage() {
+            return exp.message;
         }
 
         public static <T> ApiResult<T> create(ApiException t){
@@ -223,16 +233,4 @@ public class ApiResult<T> {
 
         return null;
     }
-
-    public String getDataMessage() {
-        if (isSuccess()) {
-            ApiResult.Success<T> result = (Success<T>) this;
-
-            return result.msg;
-        }
-
-        return "";
-    }
-
-
 }

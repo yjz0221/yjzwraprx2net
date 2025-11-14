@@ -179,6 +179,12 @@ public class ApiResult<T> {
         }
     }
 
+    public static class IDLE extends ApiResult<Object>{
+        public static <T> ApiResult<T> create(){
+            return (ApiResult<T>) new IDLE();
+        }
+    }
+
     public boolean isLoading() {
         return (this instanceof ApiResult.Loading);
     }
